@@ -61,22 +61,31 @@ class Booking(models.Model):
 class Hotel(models.Model):
     hotel_name = models.CharField(max_length=34)
     hotel_status = models.IntegerField(choices=[(i, str(i)) for i in range(1,6)])
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='city_names')
     description = models.TextField()
     create_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.hotel_name
 
+    def get_avg_rating(self):
+        all_ratings = self.hotel_stars.all()
+        if all_ratings.exists():
+            return round(sum([i.stars for i in all_ratings]) / all_ratings.count(), 1)
+        return 0
+
+    def get_count_user(self):
+        return self.hotel_stars.count()
+
 
 class HotelImage(models.Model):
     hotel_image = models.ImageField(upload_to='hotel_images')
-    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='hotel_images')
 
 
 class Rating(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='hotel_user')
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='hotel_stars')
     stars = models.IntegerField(choices=[(i, str(i))for i in range(1,11)], null=True, blank=True)
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
     text = models.TextField(null=True, blank=True)
