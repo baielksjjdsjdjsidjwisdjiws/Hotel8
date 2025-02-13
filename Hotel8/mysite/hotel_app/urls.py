@@ -19,5 +19,7 @@ urlpatterns = [
     path('rating/', RatingListAPIView.as_view(), name='rating_list'),
     path('rating/<int:pk>/', RatingCreateAPIView.as_view(), name='rating_create'),
     path('room/', RoomCreateAPIView.as_view(), name='room_create'),
-    path('booking/', BookingCreateAPIView.as_view(), name='booking_create')
-]
+    path('booking/', BookingCreateAPIView.as_view(), name='booking_create'),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),]

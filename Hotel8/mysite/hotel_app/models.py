@@ -50,12 +50,6 @@ class Room(models.Model):
 
 
 
-# class Booking(models.Model):
-#     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True)
-#     data = models.DateField()
-#     room = models.ManyToManyField(Room)
-#     def __str__(self):
-#         return f'{self.user}, {self.room}'
 
 
 class Hotel(models.Model):
